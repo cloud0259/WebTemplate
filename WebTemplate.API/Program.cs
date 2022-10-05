@@ -1,4 +1,16 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Serilog;
+using Serilog.Core;
+using WebTemplate.API;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((ctx, lc) => lc
+.MinimumLevel.Debug()
+.WriteTo.Console()
+.WriteTo.File("Log/Log.txt"));
 
 // Add services to the container.
 
@@ -17,9 +29,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+Log.Debug("test");
