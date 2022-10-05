@@ -350,4 +350,3 @@ MigrationBackup/
 .ionide/
 
 appsettings.secret.json
-/WebTemplate.API/Controllers/HomeController.cs
