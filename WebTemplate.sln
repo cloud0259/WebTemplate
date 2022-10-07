@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTemplate.Domain", "WebTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTemplate.Infrastructure", "WebTemplate.Infrastructure\WebTemplate.Infrastructure.csproj", "{98DCD93C-8A7E-4184-814B-BEAD3AADFD9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTemplate.Application", "WebTemplate.Application\WebTemplate.Application.csproj", "{DBB31686-A976-4BDD-A0EE-90153B882664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTemplate.Application", "WebTemplate.Application\WebTemplate.Application.csproj", "{DBB31686-A976-4BDD-A0EE-90153B882664}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{369C85D4-D9B7-4D28-BAF5-2872BDDA7CCB}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebTemplate.Application\WebTemplate.Application.csproj" />
+	  <ProjectReference Include="..\WebTemplate.Application\WebTemplate.Application.csproj"/>
   </ItemGroup>
 
 </Project>
