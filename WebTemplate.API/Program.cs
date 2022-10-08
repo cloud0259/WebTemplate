@@ -1,9 +1,13 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Serilog.Core;
-using WebTemplate.API;
+using WebTemplate.API.Modules;
+using WebTemplate.Infrastructure.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +23,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<WebTemplateDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Database"));
+});
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(builder =>
+    {
+        var module = new AutofacBusinessModule();
+        builder.RegisterModule(module);
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -33,5 +49,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-Log.Debug("test");
