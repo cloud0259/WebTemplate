@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTemplate.Domain", "WebTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTemplate.Infrastructure", "WebTemplate.Infrastructure\WebTemplate.Infrastructure.csproj", "{98DCD93C-8A7E-4184-814B-BEAD3AADFD9E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{5C616263-45F6-41D1-910F-C9778E981CAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebTemplate.Application", "WebTemplate.Application\WebTemplate.Application.csproj", "{DBB31686-A976-4BDD-A0EE-90153B882664}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{369C85D4-D9B7-4D28-BAF5-2872BDDA7CCB}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection
@@ -32,6 +34,10 @@ Global
 		{98DCD93C-8A7E-4184-814B-BEAD3AADFD9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98DCD93C-8A7E-4184-814B-BEAD3AADFD9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98DCD93C-8A7E-4184-814B-BEAD3AADFD9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBB31686-A976-4BDD-A0EE-90153B882664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBB31686-A976-4BDD-A0EE-90153B882664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBB31686-A976-4BDD-A0EE-90153B882664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBB31686-A976-4BDD-A0EE-90153B882664}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
