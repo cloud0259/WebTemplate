@@ -5,8 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using WebTemplate.Domain.Entities;
-using WebTemplate.Domain.Models;
+using WebTemplate.Domain.Users;
 using WebTemplate.Infrastructure.EntityFrameworkCore;
 
 namespace WebTemplate.Infrastructure.Repositories

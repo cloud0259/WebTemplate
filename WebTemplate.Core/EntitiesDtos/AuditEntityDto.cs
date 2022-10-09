@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WebTemplate.Domain.Entities
+﻿namespace WebTemplate.Core.Entities
 {
-    public abstract class AuditEntity :EntityBase, IAuditEntity
+    public abstract class AuditEntityDto :EntityBaseDto, IAuditEntityDto
     {
         public DateTime? CreatedDate { get; set; }
         public string? CreatedBy { get; set; }
@@ -14,7 +8,7 @@ namespace WebTemplate.Domain.Entities
         public string? UpdatedBy { get; set; }
     }
 
-    public abstract class AuditEntity<TKey> :EntityBase<TKey>, IAuditEntity<TKey>
+    public abstract class AuditEntityDto<TKey> :EntityBaseDto<TKey>, IAuditEntityDto<TKey>
     {
         public DateTime? CreatedDate { get; set; }
         public string? CreatedBy { get; set; }    

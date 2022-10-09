@@ -6,13 +6,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using WebTemplate.Domain.Entities;
-using WebTemplate.Domain.Repositories;
+using WebTemplate.Core.Entities;
+using WebTemplate.Core.Repositories;
 using WebTemplate.Infrastructure.EntityFrameworkCore;
 
 namespace WebTemplate.Infrastructure.Repositories
 {
-    public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : EntityBase<TKey>
+    public class Repository<TEntity, TKey> :  IRepository<TEntity, TKey> where TEntity : EntityBase<TKey>
     {
         private readonly WebTemplateDbContext _dbContext;
 
@@ -51,6 +51,7 @@ namespace WebTemplate.Infrastructure.Repositories
         {
             var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(expression, cancellationToken: cancellationToken);
 
+            var t = _dbContext.Entry<TEntity>(entity).Navigations.ToList();
             if (entity == null)
             {
                 throw new Exception($"{typeof(TEntity)} as expression not found");
@@ -69,6 +70,11 @@ namespace WebTemplate.Infrastructure.Repositories
             }
 
             return entity;
+        }
+
+        public Task<IEnumerable<TEntity>> GetPagedList(int skipCount, int maxResultCount, string sorting, bool includeDetails = false, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual async Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebTemplate.Domain.Repositories;
+using WebTemplate.Core.Repositories;
 
-namespace WebTemplate.Domain.Models
+namespace WebTemplate.Domain.Users
 {
     public interface IUserRepository : IRepository<User, Guid>
     {

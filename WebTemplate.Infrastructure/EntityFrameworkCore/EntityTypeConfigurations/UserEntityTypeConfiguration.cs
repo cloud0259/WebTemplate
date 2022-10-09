@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WebTemplate.Domain.Models;
+using WebTemplate.Domain.Users;
 
 namespace WebTemplate.Infrastructure.EntityFrameworkCore.EntityTypeConfigurations
 {
@@ -14,7 +14,6 @@ namespace WebTemplate.Infrastructure.EntityFrameworkCore.EntityTypeConfiguration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("Users");
-            builder.Property(u => u.Id).ValueGeneratedOnAdd();
         }
     }
 }

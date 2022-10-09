@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WebTemplate.Domain.Entities
+﻿namespace WebTemplate.Core.Entities
 {
-    public abstract class FullAuditEntity :AuditEntity, IFullAuditEntity
+    public abstract class FullAuditEntityDto :AuditEntityDto, IFullAuditEntityDto
     {
         public DateTime? CreatedDate { get; set; }
         public string? CreatedBy { get; set; }
@@ -15,7 +9,7 @@ namespace WebTemplate.Domain.Entities
         public bool IsDeleted { get; set; }
     }
 
-    public abstract class FullAuditEntity<TKey> : AuditEntity<TKey>, IFullAuditEntity<TKey>
+    public abstract class FullAuditEntityDto<TKey> : AuditEntityDto<TKey>, IFullAuditEntityDto<TKey>
     {
         public DateTime? CreatedDate { get; set; }
         public string? CreatedBy { get; set; }
