@@ -31,7 +31,7 @@ builder.Services.AddDbContext<WebTemplateDbContext>(options =>
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(builder =>
     {
-        var module = new AutofacBusinessModule();
+        var module = new AutofacApiModule();
         builder.RegisterModule(module);
     });
 

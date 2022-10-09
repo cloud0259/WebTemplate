@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.4.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
@@ -23,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <ProjectReference Include="..\WebTemplate.Application\WebTemplate.Application.csproj"/>
+    <ProjectReference Include="..\WebTemplate.Application\WebTemplate.Application.csproj" />
   </ItemGroup>
 
 </Project>
