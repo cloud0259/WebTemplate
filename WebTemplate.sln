@@ -16,6 +16,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "�
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AA4308BF-AA33-4186-9B09-D74D25DF8DDC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{34E2E969-C402-41A8-931B-DA95C6578B82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebTemplate.Core", "WebTemplate.Core\WebTemplate.Core.csproj", "{C6FAB419-EAAC-4A84-8805-D48EC83892E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,9 +44,20 @@ Global
 		{DBB31686-A976-4BDD-A0EE-90153B882664}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBB31686-A976-4BDD-A0EE-90153B882664}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBB31686-A976-4BDD-A0EE-90153B882664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6FAB419-EAAC-4A84-8805-D48EC83892E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6FAB419-EAAC-4A84-8805-D48EC83892E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6FAB419-EAAC-4A84-8805-D48EC83892E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6FAB419-EAAC-4A84-8805-D48EC83892E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5DA79553-2A64-4B10-AD55-898F8B0CE7B9} = {AA4308BF-AA33-4186-9B09-D74D25DF8DDC}
+		{CA02D273-4CE4-48CF-A675-06E2BC0FBB39} = {AA4308BF-AA33-4186-9B09-D74D25DF8DDC}
+		{98DCD93C-8A7E-4184-814B-BEAD3AADFD9E} = {AA4308BF-AA33-4186-9B09-D74D25DF8DDC}
+		{DBB31686-A976-4BDD-A0EE-90153B882664} = {AA4308BF-AA33-4186-9B09-D74D25DF8DDC}
+		{C6FAB419-EAAC-4A84-8805-D48EC83892E3} = {AA4308BF-AA33-4186-9B09-D74D25DF8DDC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A428DE2B-B47B-4AAC-A333-CC0F0E3AE640}
