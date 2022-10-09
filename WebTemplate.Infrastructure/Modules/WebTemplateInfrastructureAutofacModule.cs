@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using WebTemplate.Core.Repositories;
 using WebTemplate.Infrastructure.Repositories;
 
-namespace WebTemplate.Infrastructure
+namespace WebTemplate.Infrastructure.Modules
 {
-    public class WebTemplateInfrastructureModule : Autofac.Module
+    public class WebTemplateInfrastructureAutofacModule : Autofac.Module
     {
         protected override void Load(ContainerBuilder builder)
         {

@@ -72,7 +72,7 @@ namespace WebTemplate.Infrastructure.Repositories
             return entity;
         }
 
-        public Task<IEnumerable<TEntity>> GetPagedList(int skipCount, int maxResultCount, string sorting, bool includeDetails = false, CancellationToken cancellationToken = default)
+        public virtual Task<IEnumerable<TEntity>> GetPagedList(int skipCount, int maxResultCount, string sorting, bool includeDetails = false, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
@@ -89,7 +89,17 @@ namespace WebTemplate.Infrastructure.Repositories
             return entity;
         }
 
+        public Task<TEntity> InsertManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual async Task UpdateAsync(TEntity entity, bool includeDetails = false, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TEntity> UpdateManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

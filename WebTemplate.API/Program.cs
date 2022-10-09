@@ -33,6 +33,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     {
         var module = new AutofacApiModule();
         builder.RegisterModule(module);
+        
     });
 
 var app = builder.Build();
