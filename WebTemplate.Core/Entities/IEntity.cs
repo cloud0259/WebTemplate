@@ -19,13 +19,13 @@ namespace WebTemplate.Core.Entities
     /// Define an entity with primary key
     /// </summary>
     /// <typeparam name="TKey">Id object (example: Guid, int ...)</typeparam>
-    public interface IEntity<TKey> :IEntityBase
+    public interface IEntityBase<TKey> :IEntityBase
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         /// <summary>
         ///  Unique identifier for this entity
         /// </summary>
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public TKey Id { get; }
     }
 
@@ -44,7 +44,7 @@ namespace WebTemplate.Core.Entities
     /// Define a deleted entity with primary key 
     /// </summary>
     /// <typeparam name="Tkey">Id object (example: Guid, int ...</typeparam>
-    public interface IDeleteEntity<Tkey>: IEntity<Tkey>, IDeleteEntity
+    public interface IDeleteEntity<Tkey>: IEntityBase<Tkey>, IDeleteEntity
     {
 
     }
@@ -54,11 +54,11 @@ namespace WebTemplate.Core.Entities
     /// </summary>
     public interface IAuditEntity : IEntityBase
     {
-        
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         /// <summary>
         /// Creation date of entity
-        /// </summary>
+        /// </summary>       
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         DateTime? CreatedDate { get; set; }
         /// <summary>
         /// Create by User Id
@@ -78,7 +78,7 @@ namespace WebTemplate.Core.Entities
     /// Define an audited entity without id 
     /// </summary>
     /// <typeparam name="TKey">Id object (example: Guid, int ...</typeparam>
-    public interface IAuditEntity<TKey>: IAuditEntity, IEntity<TKey>
+    public interface IAuditEntity<TKey>: IAuditEntity, IEntityBase<TKey>
     {
         
     }

@@ -10,7 +10,7 @@ namespace WebTemplate.Application.Users
 {
     public interface IUserAppService:IApplicationService
     {
-        public Task<UserDto> GetUserAsync(string username);
+        public Task<UserDto> GetUserAsync(string email);
         public Task<IEnumerable<UserDto>> GetUsersAsync();
         public Task<UserDto> CreateAsync(CreateUpdateUserDto input);
     }

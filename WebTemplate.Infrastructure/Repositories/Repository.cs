@@ -51,7 +51,6 @@ namespace WebTemplate.Infrastructure.Repositories
         {
             var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(expression, cancellationToken: cancellationToken);
 
-            var t = _dbContext.Entry<TEntity>(entity).Navigations.ToList();
             if (entity == null)
             {
                 throw new Exception($"{typeof(TEntity)} as expression not found");

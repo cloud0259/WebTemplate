@@ -10,12 +10,16 @@ using WebTemplate.Core.Repositories;
 using WebTemplate.Domain;
 using WebTemplate.Application.Users;
 using WebTemplate.Application.Dtos.Users;
+using Microsoft.AspNetCore.Authorization;
+using WebTemplate.API.Mvc;
+using WebTemplate.Infrastructure.Identity.Models;
 
 namespace WebTemplate.API.Controllers
 {
     /// <summary>
     /// This is a simple controller
     /// </summary>
+
     [Route("api/[controller]")]
     [ApiController]
     public class HomeController : Controller
@@ -28,28 +32,30 @@ namespace WebTemplate.API.Controllers
             _userAppService = userAppService;
             _voitureRepository = voitureRepository;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetUser(string name)
         {
             var user = await _userAppService.GetUserAsync(name);
             return user;
         }
-
+        
         [HttpGet("getall")]
-        public async Task<IEnumerable<UserDto>> GetAll()
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status200OK)]
+        [ProducesResponseType(Microsoft.AspNetCore.Http.StatusCodes.Status401Unauthorized)]
+        [ApiConventionMethod(typeof(WebTemplateApiConventions), nameof(WebTemplateApiConventions.Get))]
+        public async Task<ActionResult<IEnumerable<UserDto>>> GetAll()
         {
             var users = await _userAppService.GetUsersAsync();
-            return users;
+            return Ok(users);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(string username, string name, string email)
+        [HttpPost("Create")]
+        public async Task<IActionResult> Create(CreateUpdateUserDto input)
         {
             //Using Log information with Serilog
-            Log.Information(name);
-            var voiture = await _voitureRepository.InsertAsync(new Voiture { Name = "test", Description = "teste" });
-            await _userAppService.CreateAsync(new CreateUpdateUserDto{Username = username, Name = name, Email = email, VoitureId = voiture.Id});
+            Log.Information(input.Email);
+            await _userAppService.CreateAsync(input);
             
             return NoContent();
         }
