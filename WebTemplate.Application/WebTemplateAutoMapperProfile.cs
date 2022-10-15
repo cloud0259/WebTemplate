@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebTemplate.Application.Dtos.Users;
 using WebTemplate.Domain.Users;
+using WebTemplate.Infrastructure.Identity.Models;
 
 namespace WebTemplate.Application
 {
@@ -13,8 +14,8 @@ namespace WebTemplate.Application
     {
         public WebTemplateAutoMapperProfile() 
         {
-            CreateMap<CreateUpdateUserDto, User>();
-            CreateMap<User, UserDto>();
+            CreateMap<CreateUpdateUserDto, ApplicationUser>();
+            CreateMap<ApplicationUser, UserDto>();
         }
     }
 }

@@ -5,7 +5,7 @@
         public abstract object[] GetKeys();
     }
 
-    public abstract class EntityBase<TKey> : IEntity<TKey>
+    public abstract class EntityBase<TKey> : IEntityBase<TKey>
     {
         public TKey Id { get; set; }
 
