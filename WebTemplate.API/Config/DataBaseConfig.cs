@@ -13,6 +13,8 @@ namespace WebTemplate.API.Config
     {
         public static void SetupDatabase(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<Token>(configuration.GetSection("token"));
+
             services.AddDbContext<WebTemplateDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("Database"))
             );
@@ -22,6 +24,7 @@ namespace WebTemplate.API.Config
                     .AddUserManager<UserManager<ApplicationUser>>()
                     .AddSignInManager<SignInManager<ApplicationUser>>()
                     .AddEntityFrameworkStores<WebTemplateDbContext>();
+
             services.Configure<IdentityOptions>(
                 options =>
                 {

@@ -1,15 +1,24 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using WebTemplate.Infrastructure.DependencyInjection;
+using WebTemplate.Infrastructure.Identity.Models;
 
 namespace WebTemplate.Application.Applications
 {
+
     public abstract class ApplicationService : IApplicationService
     {
-        
+
+        protected ApplicationService(ILazyServiceProvider lazyServiceLoader)
+        {
+            LazyServiceLoader = lazyServiceLoader;
+        }
+        public ILazyServiceProvider LazyServiceLoader { get; set; }
+        protected ILoggerFactory LoggerFactory => LazyServiceLoader.LazyGetRequiredService<ILoggerFactory>();
+        public ILogger Logger => LazyServiceLoader.LazyGetService<ILogger>(provider => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance);
+        public IMapper Mapper => LazyServiceLoader.LazyGetRequiredService<IMapper>();
+        public ICurrentUser CurrentUser => LazyServiceLoader.LazyGetRequiredService<ICurrentUser>();
+
     }
 }
