@@ -28,7 +28,7 @@ namespace WebTemplate.API.Models
             /// <summary>
             ///     Resource
             /// </summary>
-            public TokenResponse Resource { get; set; }
+            public TokenResponse? Resource { get; set; }
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace WebTemplate.API.Models
         {
             private readonly ITokenService _tokenService;
             private readonly IMapper _mapper;
-            private readonly HttpContext _httpContext;
+            private readonly HttpContext? _httpContext;
 
             /// <summary>
             ///     ctor
@@ -88,7 +88,7 @@ namespace WebTemplate.API.Models
             {
                 CommandResponse response = new CommandResponse();
 
-                string ipAddress = _httpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+                string ipAddress = _httpContext!.Connection.RemoteIpAddress!.MapToIPv4().ToString();
 
                 TokenResponse tokenResponse = await _tokenService.Authenticate(command, ipAddress);
                 if (tokenResponse == null)

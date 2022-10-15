@@ -15,13 +15,9 @@ namespace WebTemplate.API.Mvc
         /// </summary>
         /// <param name="id"></param>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]        
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
-        public static void Get(
-            [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]
-            [ApiConventionTypeMatch(ApiConventionTypeMatchBehavior.Any)]
-            object id)
+        public static void Get(string name)
         { }
 
         /// <summary>
@@ -31,7 +27,6 @@ namespace WebTemplate.API.Mvc
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
         [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Prefix)]
         public static void Find(
             [ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]

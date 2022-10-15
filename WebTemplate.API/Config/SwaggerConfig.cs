@@ -48,7 +48,7 @@ namespace WebTemplate.API.Config
             });
 
             Token token = configuration.GetSection("token").Get<Token>();
-            byte[] secret = Encoding.ASCII.GetBytes(token.Secret);
+            byte[] secret = Encoding.ASCII.GetBytes(token.Secret!);
 
             services
                 .AddAuthentication(

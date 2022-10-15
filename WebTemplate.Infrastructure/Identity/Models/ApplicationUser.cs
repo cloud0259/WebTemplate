@@ -14,10 +14,10 @@ namespace WebTemplate.Infrastructure.Identity.Models
 {
     public class ApplicationUser:IdentityUser
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
         public bool IsEnabled { get; set; }
-        public override string Email { get; set; }
+        public override string? Email { get; set; }
 
         [IgnoreDataMember]
         public string FullName

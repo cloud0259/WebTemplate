@@ -13,6 +13,7 @@ using WebTemplate.Application.Dtos.Users;
 using Microsoft.AspNetCore.Authorization;
 using WebTemplate.API.Mvc;
 using WebTemplate.Infrastructure.Identity.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace WebTemplate.API.Controllers
 {
@@ -21,8 +22,9 @@ namespace WebTemplate.API.Controllers
     /// </summary>
 
     [Route("api/[controller]")]
+    [ApiConventionType(typeof(WebTemplateApiConventions))]
     [ApiController]
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         private readonly IUserAppService _userAppService;
         private readonly IRepository<Voiture, Guid> _voitureRepository;
@@ -32,10 +34,11 @@ namespace WebTemplate.API.Controllers
             _userAppService = userAppService;
             _voitureRepository = voitureRepository;
         }
-        [AllowAnonymous]
+
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetUser(string name)
         {
+            Log.Information(name);
             var user = await _userAppService.GetUserAsync(name);
             return user;
         }
@@ -53,8 +56,6 @@ namespace WebTemplate.API.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> Create(CreateUpdateUserDto input)
         {
-            //Using Log information with Serilog
-            Log.Information(input.Email);
             await _userAppService.CreateAsync(input);
             
             return NoContent();
