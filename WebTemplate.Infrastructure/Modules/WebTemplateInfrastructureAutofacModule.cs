@@ -1,4 +1,7 @@
 ﻿using Autofac;
+using Serilog;
+using Serilog.Configuration;
+using Serilog.Extensions.Autofac.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +11,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using WebTemplate.Core.Repositories;
+using WebTemplate.Infrastructure.DependencyInjection;
 using WebTemplate.Infrastructure.Identity.Models;
 using WebTemplate.Infrastructure.Identity.Providers;
 using WebTemplate.Infrastructure.Repositories;
@@ -20,6 +24,9 @@ namespace WebTemplate.Infrastructure.Modules
         {
             //Register an open generic repository => IRepository<TEntity,TKey>
             builder.RegisterGeneric(typeof(Repository<,>)).As(typeof(IRepository<,>));
+            builder.RegisterType(typeof(LazyServiceProvider)).As(typeof(ILazyServiceProvider));
+
+            //Register Current User 
             builder.RegisterType(typeof(CurrentUser)).As(typeof(ICurrentUser));
             builder.RegisterType(typeof(DefaultPrincipalProvider)).As(typeof(IPrincipalProvider));
             
@@ -31,6 +38,11 @@ namespace WebTemplate.Infrastructure.Modules
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(t => t.Name.EndsWith("Manager"))
                 .AsImplementedInterfaces();
+
+            builder.RegisterSerilog(new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.Console()
+                .WriteTo.File("Log/Log.txt"));
         }
     }
 }

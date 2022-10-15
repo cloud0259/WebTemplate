@@ -20,14 +20,7 @@ using WebTemplate.Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Host.UseSerilog((ctx, lc) => lc
-.MinimumLevel.Debug()
-.WriteTo.Console()
-.WriteTo.File("Log/Log.txt"));
-
 // Add services to the container.
-
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,8 +29,8 @@ builder.Services.SetupSwagger(builder.Configuration);
 
 builder.Services.SetAuthorization();
 
-builder.Services.Configure<Token>(builder.Configuration.GetSection("token"));
 builder.Services.SetupDatabase(builder.Configuration);
+
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(builder =>
     {
@@ -45,7 +38,6 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
         builder.RegisterModule(module);
 
     });
-
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
