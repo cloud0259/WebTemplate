@@ -38,7 +38,7 @@ namespace WebTemplate.API.Controllers
         public async Task<TokenResponse> AuthenticateAsync([FromBody] Authenticate.AuthenticateCommand command)
         {
             var response = await _mediator.Send(command);
-            return response.Resource;
+            return response.Resource!;
         }
     }
 }

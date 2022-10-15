@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using WebTemplate.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using WebTemplate.Infrastructure.Identity.Models;
+using Microsoft.Extensions.FileProviders;
 
 namespace WebTemplate.Infrastructure.Identity.Services
 {
@@ -37,9 +38,9 @@ namespace WebTemplate.Infrastructure.Identity.Services
         /// <inheritdoc cref="ITokenService.Authenticate(TokenRequest, string)"/>
         public async Task<TokenResponse> Authenticate(TokenRequest request, string ipAddress)
         {
-            if (await IsValidUser(request.Username, request.Password))
+            if (await IsValidUser(request.Username!, request.Password!))
             {
-                ApplicationUser user = await GetUserByEmail(request.Username);
+                ApplicationUser user = await GetUserByEmail(request.Username!);
 
                 if (user != null && user.IsEnabled)
                 {
@@ -82,7 +83,7 @@ namespace WebTemplate.Infrastructure.Identity.Services
         private async Task<string> GenerateJwtToken(ApplicationUser user)
         {
             string role = (await _userManager.GetRolesAsync(user))[0];
-            byte[] secret = Encoding.ASCII.GetBytes(_token.Secret);
+            byte[] secret = Encoding.ASCII.GetBytes(_token.Secret!);
 
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             SecurityTokenDescriptor descriptor = new SecurityTokenDescriptor

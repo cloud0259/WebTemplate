@@ -14,6 +14,5 @@
         public string? CreatedBy { get; set; }    
         public DateTime? UpdatedDate { get; set; }
         public string? UpdatedBy { get; set; }
-        public TKey Id { get; set; }
     }
 }

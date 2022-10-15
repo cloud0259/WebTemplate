@@ -10,7 +10,7 @@ namespace WebTemplate.Domain
 {
     public class Voiture : FullAuditEntity<Guid>
     {
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
     }
 }

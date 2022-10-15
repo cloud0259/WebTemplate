@@ -26,7 +26,7 @@ namespace WebTemplate.Core.Entities
         /// <summary>
         ///  Unique identifier for this entity
         /// </summary>
-        public TKey Id { get; }
+        public TKey Id { get; set; }
     }
 
     /// <summary>

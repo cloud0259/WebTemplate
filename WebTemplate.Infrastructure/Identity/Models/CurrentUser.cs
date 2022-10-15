@@ -13,7 +13,7 @@ namespace WebTemplate.Infrastructure.Identity.Models
 {
     public class CurrentUser : ICurrentUser
     {
-        private readonly ClaimsIdentity _identity;
+        private readonly ClaimsIdentity? _identity;
 
         public CurrentUser(IPrincipalProvider provider)
         {
@@ -21,9 +21,9 @@ namespace WebTemplate.Infrastructure.Identity.Models
         }
 
         public bool IsAuthenticated => _identity.IsAuthenticated;
-        public string UserId => _identity.Claims.FirstOrDefault(x => x.Type == WebTemplateClaimType.UserId).Value;
-        public string Name => _identity.Claims.FirstOrDefault(c => c.Type == WebTemplateClaimType.Name).Value;
-        public string Role => _identity.Claims.FirstOrDefault(c => c.Type == WebTemplateClaimType.Role).Value;
-        public string Email => _identity.Claims.FirstOrDefault(x => x.Type == WebTemplateClaimType.Email).Value;
+        public string? UserId => _identity.Claims.FirstOrDefault(x => x.Type! == WebTemplateClaimType.UserId).Value;
+        public string? Name => _identity.Claims.FirstOrDefault(c => c.Type == WebTemplateClaimType.Name).Value;
+        public string? Role => _identity.Claims.FirstOrDefault(c => c.Type == WebTemplateClaimType.Role).Value;
+        public string? Email => _identity.Claims.FirstOrDefault(x => x.Type == WebTemplateClaimType.Email).Value;
     }
 }
