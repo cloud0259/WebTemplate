@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebTemplate.Domain.Users;
 using WebTemplate.Infrastructure.EntityFrameworkCore;
-using WebTemplate.Infrastructure.Identity.Services;
-using Microsoft.AspNetCore.Identity;
 using WebTemplate.Infrastructure.Identity.Models;
+using WebTemplate.Infrastructure.Identity.Services;
 
 namespace WebTemplate.API.Config
 {
@@ -19,7 +18,8 @@ namespace WebTemplate.API.Config
                 options.UseSqlServer(configuration.GetConnectionString("Database"))
             );
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentityCore<ApplicationUser>()
+                    .AddRoles<IdentityRole>()
                     .AddDefaultTokenProviders()
                     .AddUserManager<UserManager<ApplicationUser>>()
                     .AddSignInManager<SignInManager<ApplicationUser>>()

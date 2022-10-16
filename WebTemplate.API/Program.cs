@@ -28,7 +28,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.SetupSwagger(builder.Configuration);
 
 builder.Services.SetAuthorization();
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.SetupDatabase(builder.Configuration);
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())

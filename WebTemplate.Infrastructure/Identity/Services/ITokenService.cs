@@ -10,6 +10,6 @@ namespace WebTemplate.Infrastructure.Identity.Services
 {
     public interface ITokenService
     {
-        Task<TokenResponse> Authenticate(TokenRequest request, string ipAddress);
+        Task<TokenResponse> Authenticate(TokenRequest request);
     }
 }
