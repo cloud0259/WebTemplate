@@ -36,7 +36,7 @@ namespace WebTemplate.Infrastructure.Identity.Services
         }
 
         /// <inheritdoc cref="ITokenService.Authenticate(TokenRequest, string)"/>
-        public async Task<TokenResponse> Authenticate(TokenRequest request, string ipAddress)
+        public async Task<TokenResponse> Authenticate(TokenRequest request)
         {
             if (await IsValidUser(request.Username!, request.Password!))
             {
@@ -52,7 +52,6 @@ namespace WebTemplate.Infrastructure.Identity.Services
                     return new TokenResponse(user,
                                              role,
                                              jwtToken
-                                             //""//refreshToken.Token
                                              );
                 }
             }
@@ -70,7 +69,10 @@ namespace WebTemplate.Infrastructure.Identity.Services
                 return false;
             }
 
-            SignInResult signInResult = await _signInManager.PasswordSignInAsync(user, password, true, false);
+            //If you need cookies, please use PasswordSignInAsync(username, password, true,false);  
+            //SignInResult signInResult = await _signInManager.PasswordSignInAsync(user, password, true, false);
+
+            SignInResult signInResult = await _signInManager.CheckPasswordSignInAsync(user, password,false);
 
             return signInResult.Succeeded;
         }

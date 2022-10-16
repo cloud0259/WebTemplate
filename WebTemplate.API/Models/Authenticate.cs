@@ -88,9 +88,7 @@ namespace WebTemplate.API.Models
             {
                 CommandResponse response = new CommandResponse();
 
-                string ipAddress = _httpContext!.Connection.RemoteIpAddress!.MapToIPv4().ToString();
-
-                TokenResponse tokenResponse = await _tokenService.Authenticate(command, ipAddress);
+                TokenResponse tokenResponse = await _tokenService.Authenticate(command);
                 if (tokenResponse == null)
                 {
                     throw new Exception("Invalid Username and/or Password. Please try again");

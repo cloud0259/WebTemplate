@@ -22,7 +22,6 @@ namespace WebTemplate.API.Controllers
     /// </summary>
 
     [Route("api/[controller]")]
-    [ApiConventionType(typeof(WebTemplateApiConventions))]
     [ApiController]
     public class HomeController : ControllerBase
     {
@@ -35,6 +34,7 @@ namespace WebTemplate.API.Controllers
             _voitureRepository = voitureRepository;
         }
 
+        [Authorize()]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetUser(string name)
         {
