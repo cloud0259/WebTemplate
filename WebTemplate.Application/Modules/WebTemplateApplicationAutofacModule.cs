@@ -19,6 +19,7 @@ namespace WebTemplate.Application.Modules
             //Register the services on the Application project
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(t => t.Name.EndsWith("AppService"))
+                .PropertiesAutowired()
                 .AsImplementedInterfaces();
 
             builder.RegisterAutoMapper(ThisAssembly);

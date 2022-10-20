@@ -20,8 +20,7 @@ namespace WebTemplate.Application.Users
     {
         private readonly IIdentityUserRepository _userRepository;
 
-        public UserAppService(IIdentityUserRepository userRepository,ILazyServiceProvider lazyServiceProvider)
-            : base(lazyServiceProvider)
+        public UserAppService(IIdentityUserRepository userRepository)
         {
             _userRepository = userRepository;            
         }

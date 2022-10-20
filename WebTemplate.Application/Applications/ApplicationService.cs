@@ -10,10 +10,6 @@ namespace WebTemplate.Application.Applications
     public abstract class ApplicationService : IApplicationService
     {
 
-        protected ApplicationService(ILazyServiceProvider lazyServiceLoader)
-        {
-            LazyServiceLoader = lazyServiceLoader;
-        }
         public ILazyServiceProvider LazyServiceLoader { get; set; }
         protected ILoggerFactory LoggerFactory => LazyServiceLoader.LazyGetRequiredService<ILoggerFactory>();
         public ILogger Logger => LazyServiceLoader.LazyGetService<ILogger>(provider => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance);
