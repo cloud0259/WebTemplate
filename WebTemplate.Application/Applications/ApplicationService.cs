@@ -9,12 +9,11 @@ namespace WebTemplate.Application.Applications
 
     public abstract class ApplicationService : IApplicationService
     {
-
-        public ILazyServiceProvider LazyServiceLoader { get; set; }
-        protected ILoggerFactory LoggerFactory => LazyServiceLoader.LazyGetRequiredService<ILoggerFactory>();
-        public ILogger Logger => LazyServiceLoader.LazyGetService<ILogger>(provider => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance);
-        public IMapper Mapper => LazyServiceLoader.LazyGetRequiredService<IMapper>();
-        public ICurrentUser CurrentUser => LazyServiceLoader.LazyGetRequiredService<ICurrentUser>();
+        public ILazyServiceProvider LazyServiceProvider { get; set; }
+        protected ILoggerFactory LoggerFactory => LazyServiceProvider.LazyGetRequiredService<ILoggerFactory>();
+        public ILogger Logger => LazyServiceProvider.LazyGetService<ILogger>(provider => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance);
+        public IMapper Mapper => LazyServiceProvider.LazyGetRequiredService<IMapper>();
+        public ICurrentUser CurrentUser => LazyServiceProvider.LazyGetRequiredService<ICurrentUser>();
 
     }
 }
