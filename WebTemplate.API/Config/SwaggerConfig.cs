@@ -16,7 +16,7 @@ namespace WebTemplate.API.Config
 {
     public static class SwaggerConfig
     {
-        public static void SetupSwagger(this IServiceCollection services, IConfiguration configuration)
+        public static void SetupSwagger(this IServiceCollection services)
         {
             // Register the Swagger services
             services.AddSwaggerGen(option =>
@@ -47,40 +47,7 @@ namespace WebTemplate.API.Config
                 });
             });
 
-            Token token = configuration.GetSection("token").Get<Token>();
-            byte[] secret = Encoding.ASCII.GetBytes(token.Secret!);
-
-            services
-                .AddAuthentication(
-                    options =>
-                    {
-                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    })
-                .AddJwtBearer(
-                    options =>
-                    {
-                        options.RequireHttpsMetadata = true;
-                        options.SaveToken = true;
-                        options.ClaimsIssuer = token.Issuer;
-                        options.IncludeErrorDetails = true;
-                        options.Validate(JwtBearerDefaults.AuthenticationScheme);
-                        options.TokenValidationParameters =
-                            new TokenValidationParameters
-                            {
-                                ClockSkew = TimeSpan.Zero,
-                                ValidateIssuer = true,
-                                ValidateAudience = true,
-                                ValidateLifetime = true,
-                                ValidateIssuerSigningKey = true,
-                                ValidIssuer = token.Issuer,
-                                ValidAudience = token.Audience,
-                                IssuerSigningKey = new SymmetricSecurityKey(secret),
-                                NameClaimType = ClaimTypes.NameIdentifier,
-                                RequireSignedTokens = true,
-                                RequireExpirationTime = true
-                            };
-                    });
+            
         }
     }
 }
