@@ -35,10 +35,6 @@ namespace WebTemplate.Infrastructure.Modules
                 .Where(t => t.Name.EndsWith("Repository"))
                 .AsImplementedInterfaces();
 
-            builder.RegisterAssemblyTypes(ThisAssembly)
-                .Where(t => t.Name.EndsWith("Manager"))
-                .AsImplementedInterfaces();
-
             builder.RegisterSerilog(new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .WriteTo.Console()
