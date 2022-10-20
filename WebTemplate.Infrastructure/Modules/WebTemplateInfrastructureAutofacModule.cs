@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.AspNetCore.Identity;
 using Serilog;
 using Serilog.Configuration;
 using Serilog.Extensions.Autofac.DependencyInjection;
@@ -25,7 +26,6 @@ namespace WebTemplate.Infrastructure.Modules
             //Register an open generic repository => IRepository<TEntity,TKey>
             builder.RegisterGeneric(typeof(Repository<,>)).As(typeof(IRepository<,>));
             builder.RegisterType(typeof(LazyServiceProvider)).As(typeof(ILazyServiceProvider));
-
             //Register Current User 
             builder.RegisterType(typeof(CurrentUser)).As(typeof(ICurrentUser));
             builder.RegisterType(typeof(DefaultPrincipalProvider)).As(typeof(IPrincipalProvider));

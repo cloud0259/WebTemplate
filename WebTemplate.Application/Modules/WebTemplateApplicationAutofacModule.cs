@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Core;
 using AutoMapper;
 using AutoMapper.Contrib.Autofac.DependencyInjection;
 using System;
@@ -8,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WebTemplate.Core.Repositories;
+using WebTemplate.Infrastructure.Identity.Models;
 using WebTemplate.Infrastructure.Repositories;
 
 namespace WebTemplate.Application.Modules
@@ -19,6 +21,7 @@ namespace WebTemplate.Application.Modules
             //Register the services on the Application project
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(t => t.Name.EndsWith("AppService"))
+                .PropertiesAutowired(propertySelector: new DefaultPropertySelector(false))
                 .AsImplementedInterfaces();
 
             builder.RegisterAutoMapper(ThisAssembly);
