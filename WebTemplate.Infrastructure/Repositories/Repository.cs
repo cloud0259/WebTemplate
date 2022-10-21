@@ -88,9 +88,12 @@ namespace WebTemplate.Infrastructure.Repositories
             return entity;
         }
 
-        public Task<TEntity> InsertManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default)
+        public async Task InsertManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            if(entity is not null)
+            {
+                await _dbContext.Set<TEntity>().AddRangeAsync(entity,cancellationToken);
+            }
         }
 
         public virtual async Task UpdateAsync(TEntity entity, bool includeDetails = false, CancellationToken cancellationToken = default)
@@ -98,7 +101,7 @@ namespace WebTemplate.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<TEntity> UpdateManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default)
+        public Task UpdateManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
