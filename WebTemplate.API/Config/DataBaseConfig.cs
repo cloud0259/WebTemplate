@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebTemplate.Infrastructure.EntityFrameworkCore;
+using WebTemplate.Infrastructure.Identity.IdentityErrors;
 using WebTemplate.Infrastructure.Identity.Models;
 using WebTemplate.Infrastructure.Identity.Services;
 
@@ -21,6 +22,7 @@ namespace WebTemplate.API.Config
             services.AddIdentityCore<ApplicationUser>()
                     .AddRoles<IdentityRole>()
                     .AddDefaultTokenProviders()
+                    .AddErrorDescriber<WebTemplateIdentityErrorDescriber>()
                     .AddUserManager<UserManager<ApplicationUser>>()
                     .AddSignInManager<SignInManager<ApplicationUser>>()
                     .AddEntityFrameworkStores<WebTemplateDbContext>();

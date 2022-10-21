@@ -29,7 +29,7 @@ namespace WebTemplate.Infrastructure.Identity.Repositories
         {
             var result = await _userManager.DeleteAsync(entity);
 
-            if (result != IdentityResult.Success)
+            if (!result.Succeeded)
             {
                 throw new UserDeletedException(entity.UserName);
             }
@@ -98,6 +98,7 @@ namespace WebTemplate.Infrastructure.Identity.Repositories
         public async Task<ApplicationUser> InsertAsync(ApplicationUser entity, string password, CancellationToken cancellationToken = default)
         {
             entity.IsEnabled = true;
+            entity.EmailConfirmed = true;
             var status = await _userManager.CreateAsync(entity, password);
 
             if (status.Succeeded)
@@ -110,14 +111,20 @@ namespace WebTemplate.Infrastructure.Identity.Repositories
                 }
             }
 
-            throw new Exception("Erreur d'enregistrement du user");
+            StringBuilder errorBuilder = new StringBuilder();
+            foreach (var item in status.Errors)
+            {
+                errorBuilder.AppendLine($"{item.Description}");
+            }
+
+            throw new UserCreateException(errorBuilder.ToString());
         }
 
         public async Task UpdateAsync(ApplicationUser entity, CancellationToken cancellationToken = default)
         {
             var result = await _userManager.UpdateAsync(entity);
 
-            if (result != IdentityResult.Success)
+            if (!result.Succeeded)
             {
                 throw new UserUpdateException(entity.UserName);
             }
