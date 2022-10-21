@@ -10,6 +10,8 @@ using WebTemplate.Core.Constants;
 using WebTemplate.Core.Repositories;
 using WebTemplate.Domain.Users;
 using WebTemplate.Infrastructure.EntityFrameworkCore;
+using WebTemplate.Infrastructure.Exceptions;
+using WebTemplate.Infrastructure.Extensions;
 using WebTemplate.Infrastructure.Identity.Models;
 
 namespace WebTemplate.Infrastructure.Identity.Repositories
@@ -23,9 +25,25 @@ namespace WebTemplate.Infrastructure.Identity.Repositories
             _userManager = userManager;
         }
 
-        public Task DeleteAsync(ApplicationUser entity, CancellationToken cancellationToken = default)
+        public async Task DeleteAsync(ApplicationUser entity, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var result = await _userManager.DeleteAsync(entity);
+
+            if (result != IdentityResult.Success)
+            {
+                throw new UserDeletedException(entity.UserName);
+            }
+        }
+
+        public async Task DeleteAsync(string id, CancellationToken cancellationToken = default)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(user == null)
+            {
+                throw new UserNotFoundException(id);
+            }
+            await DeleteAsync(user, cancellationToken);
         }
 
         public Task<ApplicationUser> FindAsync(string id, CancellationToken cancellationToken = default)
@@ -38,29 +56,43 @@ namespace WebTemplate.Infrastructure.Identity.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<ApplicationUser>> GetAllAsync(bool includeDetails = false, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<ApplicationUser>> GetAllAsync( CancellationToken cancellationToken = default)
         {
             return await _userManager.Users.ToListAsync();
         }
 
-        public Task<IEnumerable<ApplicationUser>> GetAllAsync(Expression<Func<ApplicationUser, bool>> expression, bool includeDetails = false, CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<ApplicationUser>> GetAllAsync(Expression<Func<ApplicationUser, bool>> expression, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await _userManager.Users.Where(expression).ToListAsync();
         }
 
         public async Task<ApplicationUser> GetAsync(Expression<Func<ApplicationUser, bool>> expression, CancellationToken cancellationToken = default)
         {
-            return await _userManager.Users.FirstOrDefaultAsync(expression);
+            var user =  await _userManager.Users.FirstOrDefaultAsync(expression);
+
+            if(user == null)
+            { 
+                throw new UserNotFoundException($"Impossible de trouver un utilisateur avec l'expression {expression}", null);
+            }
+            return user;
         }
 
-        public Task<ApplicationUser> GetAsync(string id, CancellationToken cancellationToken = default)
+        public async Task<ApplicationUser> GetAsync(string id, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await GetAsync(x=>x.Id == id,cancellationToken);
+
         }
 
-        public Task<IEnumerable<ApplicationUser>> GetPagedList(int skipCount, int maxResultCount, string sorting, bool includeDetails = false, CancellationToken cancellationToken = default)
+        public async Task<(int,IEnumerable<ApplicationUser>)> GetPagedList(string filter, int skipCount, int maxResultCount, string sorting, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var query = _userManager.Users.AsQueryable();
+            query = query.WhereIf(filter is not null, x=>x.Email.Contains(filter));
+            query = query.Skip(skipCount);
+            query = query.Take(maxResultCount);
+            //query = query.WhereIf(sorting is not null, query.OrderBy(x => x.NormalizedEmail));
+            var count = await query.CountAsync();
+
+            return (count, await query.ToListAsync());
         }
 
         public async Task<ApplicationUser> InsertAsync(ApplicationUser entity, string password, CancellationToken cancellationToken = default)
@@ -81,9 +113,14 @@ namespace WebTemplate.Infrastructure.Identity.Repositories
             throw new Exception("Erreur d'enregistrement du user");
         }
 
-        public Task UpdateAsync(ApplicationUser entity, bool includeDetails = false, CancellationToken cancellationToken = default)
+        public async Task UpdateAsync(ApplicationUser entity, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var result = await _userManager.UpdateAsync(entity);
+
+            if (result != IdentityResult.Success)
+            {
+                throw new UserUpdateException(entity.UserName);
+            }
         }
     }
 }
