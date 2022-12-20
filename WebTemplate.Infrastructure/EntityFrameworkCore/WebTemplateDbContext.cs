@@ -11,10 +11,11 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using WebTemplate.Infrastructure.Identity.Models;
 using WebTemplate.Domain;
 using System.Reflection.Emit;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebTemplate.Infrastructure.EntityFrameworkCore
 {
-    public class WebTemplateDbContext : IdentityDbContext<ApplicationUser>
+    public class WebTemplateDbContext : IdentityDbContext<ApplicationUser,IdentityRole<Guid>,Guid>
     {
         protected WebTemplateDbContext()
         {

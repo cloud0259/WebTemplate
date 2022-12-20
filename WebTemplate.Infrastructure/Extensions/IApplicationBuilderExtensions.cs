@@ -21,7 +21,7 @@ namespace WebTemplate.Infrastructure.Extensions
                 var services = serviceScope.ServiceProvider;
 
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
                 await ApplicationDbContextDataSeed.SeedAsync(userManager, roleManager);
             }

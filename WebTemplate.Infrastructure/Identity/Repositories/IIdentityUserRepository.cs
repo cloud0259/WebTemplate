@@ -10,13 +10,13 @@ using WebTemplate.Infrastructure.Identity.Models;
 
 namespace WebTemplate.Infrastructure.Identity.Repositories
 {
-    public interface IIdentityUserRepository
+    public interface IIdentityUserRepository 
     {
-        Task<ApplicationUser> GetAsync(string id, CancellationToken cancellationToken = default);
+        Task<ApplicationUser> GetAsync(Guid id, CancellationToken cancellationToken = default);
         Task<ApplicationUser> GetAsync(Expression<Func<ApplicationUser, bool>> expression, CancellationToken cancellationToken = default);
         Task<IEnumerable<ApplicationUser>> GetAllAsync(CancellationToken cancellationToken = default);
         Task UpdateAsync(ApplicationUser entity, CancellationToken cancellationToken = default);
-        Task DeleteAsync(string id, CancellationToken cancellationToken = default);
+        Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
         Task DeleteAsync(ApplicationUser entity, CancellationToken cancellationToken = default);
         Task<(int,IEnumerable<ApplicationUser>)> GetPagedList(
             string filter,

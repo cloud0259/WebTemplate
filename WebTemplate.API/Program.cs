@@ -5,23 +5,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Serilog;
 using WebTemplate.API.Config;
 using WebTemplate.API.Modules;
 using WebTemplate.Infrastructure.EntityFrameworkCore;
 using WebTemplate.Infrastructure.Extensions;
-using MediatR;
-using System.Reflection;
-using Microsoft.AspNetCore.Http;
-using Autofac.Core;
-using WebTemplate.Infrastructure.Identity.Services;
-using WebTemplate.Domain.Users;
-using WebTemplate.Infrastructure.Identity.Models;
-using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
+{
 
+    var env = hostingContext.HostingEnvironment;
+
+    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+          .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -40,14 +38,20 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     });
 
 var app = builder.Build();
+var context = app.Services.GetRequiredService<WebTemplateDbContext>();
+context.Database.Migrate();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
+    /*app.UseSwagger();
     app.UseSwaggerUI();
-    app.SeedIdentityDataAsync().Wait();
+    app.SeedIdentityDataAsync().Wait();*/
 }
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.SeedIdentityDataAsync().Wait();
 app.UseHttpsRedirection();
 
 app.UseRouting();

@@ -9,10 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using WebTemplate.Domain;
 using WebTemplate.Domain.Users;
+using WebTemplate.Core.Entities;
 
 namespace WebTemplate.Infrastructure.Identity.Models
 {
-    public class ApplicationUser:IdentityUser
+    public class ApplicationUser:IdentityUser<Guid>,IEntityBase<Guid>
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
@@ -23,6 +24,11 @@ namespace WebTemplate.Infrastructure.Identity.Models
         public string FullName
         {
             get => $"{FirstName} {LastName}";
+        }
+
+        public object[] GetKeys()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -71,7 +71,7 @@ namespace WebTemplate.Infrastructure.Repositories
             return entity;
         }
 
-        public virtual Task<IEnumerable<TEntity>> GetPagedList(int skipCount, int maxResultCount, string sorting, bool includeDetails = false, CancellationToken cancellationToken = default)
+        public virtual Task<(int,IEnumerable<TEntity>)> GetPagedList(int skipCount, int maxResultCount, string sorting, bool includeDetails = false, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

@@ -15,7 +15,8 @@ namespace WebTemplate.Infrastructure.EntityFrameworkCore
         {
             ConfigurationBuilder confBuilder = new ConfigurationBuilder();
             confBuilder.AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"))
-                .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.secret.json"));
+                .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.Production.json"),true)
+                .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.secret.json"),true);
 
             IConfigurationRoot configurationRoot = confBuilder.Build();
 
