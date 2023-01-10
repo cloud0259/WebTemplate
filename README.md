@@ -50,3 +50,9 @@ Si ce n'est pas encore fait, pensez à modifier les projets csproj pour remplace
 
 Enfin, dans chaque projet, remplacer les using et autre namespace par le paramètre necessaire.
 https://learn.microsoft.com/fr-fr/visualstudio/ide/template-parameters?view=vs-2022
+
+# Dossier template format zip
+
+Un template sous format Zip est disponible afin d'utiliser le projet comme template.
+Vous devez le copier dans votre dossier Template.
+Par défaut celui ci ce trouce dans : C:\Users\User\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#
