@@ -20,14 +20,14 @@ namespace WebTemplate.Infrastructure.Identity.Seed
             await roleManager.CreateAsync(new IdentityRole(ApplicationIdentityConstants.Roles.Member));
 
             // New admin user
-            string adminUserName = "pilloystephane@gmail.com";
+            string adminUserName = "admin@webtemplate.com";
             var adminUser = new ApplicationUser
             {
                 UserName = adminUserName,
                 Email = adminUserName,
                 IsEnabled = true,
                 EmailConfirmed = true,
-                FirstName = "Stéphane",
+                FirstName = "admin",
                 LastName = "Administrator"
             };
 
