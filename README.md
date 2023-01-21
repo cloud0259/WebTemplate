@@ -54,5 +54,6 @@ https://learn.microsoft.com/fr-fr/visualstudio/ide/template-parameters?view=vs-2
 # Dossier template format zip
 
 Un template sous format Zip est disponible afin d'utiliser le projet comme template.
+Celui ci comporte quelques bug du as des using inutiles
 Vous devez le copier dans votre dossier Template.
 Par défaut celui ci ce trouce dans : C:\Users\User\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#
