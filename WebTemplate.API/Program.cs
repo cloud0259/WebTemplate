@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 using WebTemplate.API.Config;
 using WebTemplate.API.Modules;
 using WebTemplate.Infrastructure.EntityFrameworkCore;
@@ -18,7 +19,10 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
     var env = hostingContext.HostingEnvironment;
 
     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-          .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+          .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+          .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.secret.json"), true); ;
+
+
 });
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -40,12 +44,10 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 var app = builder.Build();
 var context = app.Services.GetRequiredService<WebTemplateDbContext>();
 context.Database.Migrate();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    /*app.UseSwagger();
-    app.UseSwaggerUI();
-    app.SeedIdentityDataAsync().Wait();*/
 }
 
 app.UseSwagger();

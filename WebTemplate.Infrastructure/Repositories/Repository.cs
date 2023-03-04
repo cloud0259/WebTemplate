@@ -24,7 +24,7 @@ namespace WebTemplate.Infrastructure.Repositories
         public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
             _dbContext.Set<TEntity>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(bool includeDetails = false, CancellationToken cancellationToken = default)

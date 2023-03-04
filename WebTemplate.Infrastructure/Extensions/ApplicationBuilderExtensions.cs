@@ -12,7 +12,7 @@ using WebTemplate.Infrastructure.Identity.Seed;
 
 namespace WebTemplate.Infrastructure.Extensions
 {
-    public static class IApplicationBuilderExtensions
+    public static class ApplicationBuilderExtensions
     {
         public static async Task SeedIdentityDataAsync(this IApplicationBuilder builder)
         {

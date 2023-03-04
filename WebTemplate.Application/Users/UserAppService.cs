@@ -19,17 +19,27 @@ namespace WebTemplate.Application.Users
     public class UserAppService :ApplicationService, IUserAppService
     {
         private readonly IIdentityUserRepository _userRepository;
-
-        public UserAppService(IIdentityUserRepository userRepository)
+        private readonly UserManager<ApplicationUser> _userManager; 
+        public UserAppService(
+            IIdentityUserRepository userRepository,
+            UserManager<ApplicationUser> userManager)
         {
-            _userRepository = userRepository;            
+            _userRepository = userRepository;          
+            _userManager = userManager;
         }
 
         public async Task<UserDto> CreateAsync(CreateUpdateUserDto input)
         {
             var user = Mapper.Map<ApplicationUser>(input);
-            await _userRepository.InsertAsync(user,input.Password);
-            return null;
+
+            var result = await _userManager.CreateAsync(user, input.Password);
+            if(result.Succeeded)
+            {
+                return Mapper.Map<UserDto>(result);
+            }
+
+            //await _userRepository.InsertAsync(user,input.Password);
+            throw new Exception("Erreur lors de la création de l'utilisateur");
         }
 
         public async Task<UserDto> GetUserAsync(string email)
