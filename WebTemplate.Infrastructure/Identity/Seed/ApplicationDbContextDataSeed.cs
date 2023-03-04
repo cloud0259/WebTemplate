@@ -13,11 +13,11 @@ namespace WebTemplate.Infrastructure.Identity.Seed
     public class ApplicationDbContextDataSeed
     {
 
-        public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole<Guid>> roleManager)
         {
             // Add roles supported
-            await roleManager.CreateAsync(new IdentityRole(ApplicationIdentityConstants.Roles.Administrator));
-            await roleManager.CreateAsync(new IdentityRole(ApplicationIdentityConstants.Roles.Member));
+            await roleManager.CreateAsync(new IdentityRole<Guid>(ApplicationIdentityConstants.Roles.Administrator));
+            await roleManager.CreateAsync(new IdentityRole<Guid>(ApplicationIdentityConstants.Roles.Member));
 
             // New admin user
             string adminUserName = "admin@webtemplate.com";

@@ -25,7 +25,7 @@ namespace WebTemplate.Core.Repositories
         Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default);        
         Task<IEnumerable<TEntity>> GetAllAsync(bool includeDetails = false, CancellationToken cancellationToken = default);
         Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> expression, bool includeDetails = false, CancellationToken cancellationToken = default);
-        Task<IEnumerable<TEntity>> GetPagedList(int skipCount,
+        Task<(int,IEnumerable<TEntity>)> GetPagedList(int skipCount,
         int maxResultCount,
         string sorting,
         bool includeDetails = false,

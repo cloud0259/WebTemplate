@@ -12,7 +12,7 @@ using WebTemplate.Infrastructure.Identity.Seed;
 
 namespace WebTemplate.Infrastructure.Extensions
 {
-    public static class IApplicationBuilderExtensions
+    public static class ApplicationBuilderExtensions
     {
         public static async Task SeedIdentityDataAsync(this IApplicationBuilder builder)
         {
@@ -21,7 +21,7 @@ namespace WebTemplate.Infrastructure.Extensions
                 var services = serviceScope.ServiceProvider;
 
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
                 await ApplicationDbContextDataSeed.SeedAsync(userManager, roleManager);
             }

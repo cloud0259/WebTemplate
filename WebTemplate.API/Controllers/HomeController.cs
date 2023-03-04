@@ -1,22 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using WebTemplate.Domain.Users;
-using WebTemplate.Core.Repositories;
-using WebTemplate.Domain;
-using WebTemplate.Application.Users;
-using WebTemplate.Application.Dtos.Users;
-using Microsoft.AspNetCore.Authorization;
 using WebTemplate.API.Mvc;
-using WebTemplate.Infrastructure.Identity.Models;
-using Microsoft.AspNetCore.Http;
+using WebTemplate.Application.Dtos.Users;
+using WebTemplate.Application.Users;
 
-namespace WebTemplate.API.Controllers
-{
+namespace WebTemplate.API.Controllers {
     /// <summary>
     /// This is a simple controller
     /// </summary>
@@ -26,12 +17,10 @@ namespace WebTemplate.API.Controllers
     public class HomeController : ControllerBase
     {
         private readonly IUserAppService _userAppService;
-        private readonly IRepository<Voiture, Guid> _voitureRepository;
 
-        public HomeController(IUserAppService userAppService, IRepository<Voiture, Guid> voitureRepository)
+        public HomeController(IUserAppService userAppService)
         {
             _userAppService = userAppService;
-            _voitureRepository = voitureRepository;
         }
 
         [Authorize()]
