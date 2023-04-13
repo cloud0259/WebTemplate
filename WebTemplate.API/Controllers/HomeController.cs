@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebTemplate.API.Mvc;
+using WebTemplate.Application.Cars;
 using WebTemplate.Application.Dtos.Users;
 using WebTemplate.Application.Users;
+using WebTemplate.Domain;
+using WebTemplate.Domain.Users;
 
 namespace WebTemplate.API.Controllers {
     /// <summary>
@@ -17,18 +21,20 @@ namespace WebTemplate.API.Controllers {
     public class HomeController : ControllerBase
     {
         private readonly IUserAppService _userAppService;
+        private readonly ICarAppService _carAppService;
 
-        public HomeController(IUserAppService userAppService)
+        public HomeController(IUserAppService userAppService, ICarAppService carAppService)
         {
             _userAppService = userAppService;
+            _carAppService = carAppService;
         }
 
         [Authorize()]
         [HttpGet]
-        public async Task<ActionResult<UserDto>> GetUser(string name)
+        public async Task<ActionResult<UserDetailsWithIdentityUserDto>> GetUser(Guid id)
         {
-            Log.Information(name);
-            var user = await _userAppService.GetUserAsync(name);
+            Log.Information(id.ToString());
+            var user = await _userAppService.GetUserAsync(id);
             return user;
         }
         
@@ -43,11 +49,40 @@ namespace WebTemplate.API.Controllers {
         }
 
         [HttpPost("Create")]
-        public async Task<IActionResult> Create(CreateUpdateUserDto input)
+        public async Task<ActionResult<UserDto>> Create(CreateUpdateUserDto input)
         {
-            await _userAppService.CreateAsync(input);
+            var user = await _userAppService.CreateAsync(input);
             
-            return NoContent();
+            return user;
+        }
+
+        [HttpPost("CreateCar")]
+
+        public async Task<ActionResult<Voiture>> CreateCar(string name)
+        {
+            return await _carAppService.CreateCar(name);
+        }
+
+        [HttpPut("UpdateCar")]
+
+        public async Task<ActionResult<Voiture>> UpdateCar(Guid id,  string name)
+        {
+            return await _carAppService.UpdateCar(id,name);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("GetAllCars")]
+        public async Task<ActionResult<IEnumerable<Voiture>>> GetAllCars()
+        {
+            return Ok(await _carAppService.GetAllCar());
+        }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult<UserDetails>> InsertUserDetails(CreateUpdateUserDetailsDto input)
+        {
+            return await  _userAppService.AddDetailsToUser(input);
         }
 
 

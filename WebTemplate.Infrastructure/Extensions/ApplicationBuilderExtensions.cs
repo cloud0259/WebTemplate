@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebTemplate.Domain.Users;
+using WebTemplate.Infrastructure.Adapters;
 using WebTemplate.Infrastructure.Identity.Models;
 using WebTemplate.Infrastructure.Identity.Seed;
 

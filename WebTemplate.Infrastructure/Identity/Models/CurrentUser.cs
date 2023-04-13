@@ -20,10 +20,10 @@ namespace WebTemplate.Infrastructure.Identity.Models
             _identity = provider.User.Identity as ClaimsIdentity;
         }
 
-        public bool IsAuthenticated => _identity.IsAuthenticated;
-        public string? UserId => _identity.Claims.FirstOrDefault(x => x.Type! == WebTemplateClaimType.UserId).Value;
-        public string? Name => _identity.Claims.FirstOrDefault(c => c.Type == WebTemplateClaimType.Name).Value;
-        public string? Role => _identity.Claims.FirstOrDefault(c => c.Type == WebTemplateClaimType.Role).Value;
-        public string? Email => _identity.Claims.FirstOrDefault(x => x.Type == WebTemplateClaimType.Email).Value;
+        public bool IsAuthenticated => _identity!.IsAuthenticated;
+        public Guid UserId => Guid.Parse(_identity!.Claims.First(x => x.Type! == WebTemplateClaimType.UserId).Value);
+        public string Name => _identity!.Claims.First(c => c.Type == WebTemplateClaimType.Name).Value;
+        public string Role => _identity!.Claims.First(c => c.Type == WebTemplateClaimType.Role).Value;
+        public string Email => _identity!.Claims.First(x => x.Type == WebTemplateClaimType.Email).Value;
     }
 }

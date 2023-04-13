@@ -29,6 +29,10 @@ namespace WebTemplate.Infrastructure.Modules
             //Register Current User 
             builder.RegisterType(typeof(CurrentUser)).As(typeof(ICurrentUser));
             builder.RegisterType(typeof(DefaultPrincipalProvider)).As(typeof(IPrincipalProvider));
+
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(t => t.Name.EndsWith("Adapter"))
+                .AsImplementedInterfaces();
             
             //Register the repositories on the infrastructure project
             builder.RegisterAssemblyTypes(ThisAssembly)

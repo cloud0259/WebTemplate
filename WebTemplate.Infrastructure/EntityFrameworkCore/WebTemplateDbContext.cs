@@ -12,6 +12,7 @@ using WebTemplate.Infrastructure.Identity.Models;
 using WebTemplate.Domain;
 using System.Reflection.Emit;
 using Microsoft.AspNetCore.Identity;
+using WebTemplate.Infrastructure.Adapters;
 
 namespace WebTemplate.Infrastructure.EntityFrameworkCore
 {
@@ -30,10 +31,13 @@ namespace WebTemplate.Infrastructure.EntityFrameworkCore
         //Add DbSet 
         //Example: public DbSet<User> Users{get;set;}
         //public DbSet<User> Users { get; set; }
-
+        public DbSet<Voiture>? Cars { get; set; }
+        public DbSet<UserDetails>? UserDetails { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.UseUserEntityConfiguration();
+
             //modelBuilder.ApplyConfiguration(new UserEntityTypeConfiguration());
 
             /* applying the configuration

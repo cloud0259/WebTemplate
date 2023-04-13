@@ -16,6 +16,8 @@ namespace WebTemplate.Application
         {
             CreateMap<CreateUpdateUserDto, ApplicationUser>();
             CreateMap<ApplicationUser, UserDto>();
+            CreateMap<CreateUpdateUserDetailsDto, UserDetails>();
+            CreateMap<UserDetailsWithIdentityUser, UserDetailsWithIdentityUserDto>();
         }
     }
 }

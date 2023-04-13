@@ -59,7 +59,7 @@ namespace WebTemplate.Core.Entities
         /// Creation date of entity
         /// </summary>       
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        DateTime? CreatedDate { get; set; }
+        DateTime CreatedDate { get; set; }
         /// <summary>
         /// Create by User Id
         /// </summary>
@@ -67,7 +67,8 @@ namespace WebTemplate.Core.Entities
         /// <summary>
         /// Updated date of entity
         /// </summary>
-        DateTime? UpdatedDate { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        DateTime UpdatedDate { get; set; }
         /// <summary>
         /// Update by User Id
         /// </summary>

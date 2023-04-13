@@ -11,24 +11,14 @@ using WebTemplate.Infrastructure.Identity.Models;
 
 namespace WebTemplate.Infrastructure.Identity.Repositories
 {
-    public class IdentityRepository : IIdentityUserRepository, IRepository<ApplicationUser, Guid>
+    public class IdentityRepository : IIdentityUserRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;
 
         public IdentityRepository( UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
-        }
-
-        public virtual async Task DeleteAsync(ApplicationUser entity, CancellationToken cancellationToken = default)
-        {
-            var result = await _userManager.DeleteAsync(entity);
-
-            if (!result.Succeeded)
-            {
-                throw new UserDeletedException(entity.UserName);
-            }
-        }
+        }        
 
         public virtual async Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
         {
@@ -39,6 +29,11 @@ namespace WebTemplate.Infrastructure.Identity.Repositories
                 throw new UserNotFoundException(id.ToString());
             }
             await DeleteAsync(user, cancellationToken);
+        }
+
+        public Task DeleteAsync(ApplicationUser entity, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
 
         public virtual Task<ApplicationUser> FindAsync(string id, CancellationToken cancellationToken = default)
@@ -129,15 +124,6 @@ namespace WebTemplate.Infrastructure.Identity.Repositories
             throw new UserCreateException(errorBuilder.ToString());
         }
 
-        public Task<ApplicationUser> InsertAsync(ApplicationUser entity, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task InsertManyAsync(IEnumerable<ApplicationUser> entity, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task UpdateAsync(ApplicationUser entity, CancellationToken cancellationToken = default)
         {
@@ -149,14 +135,6 @@ namespace WebTemplate.Infrastructure.Identity.Repositories
             }
         }
 
-        public Task UpdateAsync(ApplicationUser entity, bool includeDetails = false, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task UpdateManyAsync(IEnumerable<ApplicationUser> entity, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -7,7 +7,7 @@ namespace WebTemplate.Core.Repositories
     {
         Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default);
         Task InsertManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default);
-        Task UpdateAsync(TEntity entity, bool includeDetails = false, CancellationToken cancellationToken = default);
+        Task<TEntity> UpdateAsync(TEntity entity, bool includeDetails = false, CancellationToken cancellationToken = default);
         Task UpdateManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default);
         Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default); 
     }
