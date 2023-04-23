@@ -13,17 +13,17 @@ namespace WebTemplate.Infrastructure.Identity.Models
 {
     public class CurrentUser : ICurrentUser
     {
-        private readonly ClaimsIdentity? _identity;
+        private readonly ClaimsIdentity _identity;
 
         public CurrentUser(IPrincipalProvider provider)
         {
-            _identity = provider.User.Identity as ClaimsIdentity;
+            _identity = provider.User?.Identity as ClaimsIdentity ?? new ClaimsIdentity();
         }
 
-        public bool IsAuthenticated => _identity.IsAuthenticated;
-        public string? UserId => _identity.Claims.FirstOrDefault(x => x.Type! == WebTemplateClaimType.UserId).Value;
-        public string? Name => _identity.Claims.FirstOrDefault(c => c.Type == WebTemplateClaimType.Name).Value;
-        public string? Role => _identity.Claims.FirstOrDefault(c => c.Type == WebTemplateClaimType.Role).Value;
-        public string? Email => _identity.Claims.FirstOrDefault(x => x.Type == WebTemplateClaimType.Email).Value;
+        public bool IsAuthenticated => UserId.HasValue;
+        public Guid? UserId => Guid.TryParse(_identity.Claims.FirstOrDefault(x => x.Type == WebTemplateClaimType.UserId)?.Value, out var userId) ? userId : null;
+        public string Name => _identity.Claims.FirstOrDefault(c => c.Type == WebTemplateClaimType.Name)?.Value ?? string.Empty;
+        public string Role => _identity.Claims.FirstOrDefault(c => c.Type == WebTemplateClaimType.Role)?.Value ?? string.Empty;
+        public string Email => _identity.Claims.FirstOrDefault(x => x.Type == WebTemplateClaimType.Email)?.Value ?? string.Empty;
     }
 }

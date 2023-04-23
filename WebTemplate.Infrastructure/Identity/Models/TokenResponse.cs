@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebTemplate.Domain.Users;
+using WebTemplate.Infrastructure.Adapters;
 
 namespace WebTemplate.Infrastructure.Identity.Models
 {
@@ -15,7 +16,6 @@ namespace WebTemplate.Infrastructure.Identity.Models
                             )
         {
             Id = user.Id;
-            FullName = user.FullName;
             EmailAddress = user.Email;
             Token = token;
             Role = role;

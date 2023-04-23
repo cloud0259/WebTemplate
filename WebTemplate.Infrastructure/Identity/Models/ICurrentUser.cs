@@ -9,7 +9,7 @@ namespace WebTemplate.Infrastructure.Identity.Models
     public interface ICurrentUser
     {
         bool IsAuthenticated { get; }       
-        string? UserId { get; }
+        Guid? UserId { get; }
         string? Name { get; }
         string? Role { get; }
         string? Email { get; }

@@ -12,6 +12,7 @@ using WebTemplate.Domain.Users;
 using Microsoft.AspNetCore.Identity;
 using WebTemplate.Infrastructure.Identity.Models;
 using Microsoft.Extensions.FileProviders;
+using WebTemplate.Infrastructure.Adapters;
 
 namespace WebTemplate.Infrastructure.Identity.Services
 {
@@ -96,8 +97,9 @@ namespace WebTemplate.Infrastructure.Identity.Services
                 {
                     new Claim("UserId", user.Id.ToString()),
                     new Claim("FullName", $"{user.FirstName} {user.LastName}"),
-                    new Claim(ClaimTypes.Name, user.Email),
-                    new Claim(ClaimTypes.NameIdentifier, user.Email),
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier, user.UserName),
+                    new Claim(ClaimTypes.Email, user.Email),
                     new Claim(ClaimTypes.Role, role)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(_token.Expiry),

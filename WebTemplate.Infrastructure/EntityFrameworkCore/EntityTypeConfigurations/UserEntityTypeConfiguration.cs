@@ -9,11 +9,23 @@ using WebTemplate.Domain.Users;
 
 namespace WebTemplate.Infrastructure.EntityFrameworkCore.EntityTypeConfigurations
 {
-    public class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
+    //public class UserEntityTypeConfiguration : IEntityTypeConfiguration<UserDetails>
+    //{
+    //    public void Configure(EntityTypeBuilder<UserDetails> builder)
+    //    {
+    //        builder.ToTable("UserDetails");
+    //    }
+    //}
+
+    public static class UserEntityTypeConfigurationExtension
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public static void UseUserEntityConfiguration(this ModelBuilder modelBuilder)
         {
-            builder.ToTable("Users");
+            modelBuilder.Entity<UserDetails>(u =>
+            {
+                u.ToTable("UserDetails");
+            });
         }
     }
+    
 }

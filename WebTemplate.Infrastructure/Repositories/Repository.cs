@@ -1,5 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,27 +12,29 @@ using System.Threading.Tasks;
 using WebTemplate.Core.Entities;
 using WebTemplate.Core.Repositories;
 using WebTemplate.Infrastructure.EntityFrameworkCore;
+using WebTemplate.Infrastructure.EntityFrameworkCore.SoftDeletes;
 
 namespace WebTemplate.Infrastructure.Repositories
 {
     public class Repository<TEntity, TKey> :  IRepository<TEntity, TKey> where TEntity : EntityBase<TKey>
     {
-        private readonly WebTemplateDbContext _dbContext;
-
-        public Repository(WebTemplateDbContext dbContext)
+        public WebTemplateDbContext DbContext { get; }
+        public IDataFilter DataFilter { get; }
+        public Repository(WebTemplateDbContext dbContext, IDataFilter dataFilter)
         {
-            _dbContext = dbContext;
+            DbContext = dbContext;
+            DataFilter = dataFilter;
         }
 
         public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            _dbContext.Set<TEntity>().Remove(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+            DbContext.Set<TEntity>().Remove(entity);
+            await DbContext.SaveChangesAsync(cancellationToken);
         }
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(bool includeDetails = false, CancellationToken cancellationToken = default)
         {
-            var entities = await _dbContext.Set<TEntity>().ToListAsync(cancellationToken);
+            var entities = await DbContext.Set<TEntity>().ToListAsync(cancellationToken);
             if (entities != null)
             {
                 return entities;
@@ -39,7 +44,7 @@ namespace WebTemplate.Infrastructure.Repositories
 
         public virtual async Task<IEnumerable<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> expression, bool includeDetails = false, CancellationToken cancellationToken = default)
         {
-            var entities = await _dbContext.Set<TEntity>().Where(expression).ToListAsync(cancellationToken);
+            var entities = await DbContext.Set<TEntity>().Where(expression).ToListAsync(cancellationToken);
             if (entities != null)
             {
                 return entities;
@@ -49,7 +54,7 @@ namespace WebTemplate.Infrastructure.Repositories
 
         public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellationToken = default)
         {
-            var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(expression, cancellationToken: cancellationToken);
+            var entity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(expression, cancellationToken: cancellationToken);
 
             if (entity == null)
             {
@@ -61,11 +66,11 @@ namespace WebTemplate.Infrastructure.Repositories
 
         public virtual async Task<TEntity> GetAsync(TKey id, CancellationToken cancellationToken = default)
         {
-            var entity = await _dbContext.Set<TEntity>().FirstOrDefaultAsync(x=>x.Id.Equals(id), cancellationToken: cancellationToken);
+            var entity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken: cancellationToken);
 
             if (entity == null)
             {
-                throw new Exception($"{typeof(TEntity)} as  expression not found");
+                throw new Exception($"{typeof(TEntity)} as expression not found");
             }
 
             return entity;
@@ -78,32 +83,52 @@ namespace WebTemplate.Infrastructure.Repositories
 
         public virtual async Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
         {
-            if(entity == null)
+            try
             {
-                throw new NullReferenceException($"{entity} is null");
-            }
+                if (entity == null)
+                {
+                    throw new NullReferenceException($"{entity} is null");
+                }
 
-            await _dbContext.Set<TEntity>().AddAsync(entity);
-            await _dbContext.SaveChangesAsync();
-            return entity;
+                await DbContext.Set<TEntity>().AddAsync(entity, cancellationToken);
+                await DbContext.SaveChangesAsync(cancellationToken);
+                return entity;
+            }
+            catch (Exception ex)    
+            {
+                Log.Logger.Error(ex.Message);
+                throw new Exception(ex.Message);
+            }
+            
         }
 
         public async Task InsertManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default)
         {
             if(entity is not null)
             {
-                await _dbContext.Set<TEntity>().AddRangeAsync(entity,cancellationToken);
+                await DbContext.Set<TEntity>().AddRangeAsync(entity,cancellationToken);
             }
         }
 
-        public virtual async Task UpdateAsync(TEntity entity, bool includeDetails = false, CancellationToken cancellationToken = default)
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool includeDetails = false, CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var entitySave =  DbContext.Set<TEntity>().Update(entity);
+            await DbContext.SaveChangesAsync(cancellationToken);
+            return entitySave.Entity;
         }
 
         public Task UpdateManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual async Task HardDeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            using(var t = DataFilter.Disable<ISoftDelete>())
+            {
+                DbContext.Remove(entity);
+                await DbContext.SaveChangesAsync(cancellationToken);
+            }
         }
     }
 }

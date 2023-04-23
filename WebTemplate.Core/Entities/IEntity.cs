@@ -30,21 +30,10 @@ namespace WebTemplate.Core.Entities
     }
 
     /// <summary>
-    /// Define a deleted entity without id
-    /// </summary>
-    public interface IDeleteEntity : IEntityBase
-    {
-        /// <summary>
-        /// Use for soft delete object
-        /// </summary>
-        public bool IsDeleted { get; set; }
-    }
-
-    /// <summary>
     /// Define a deleted entity with primary key 
     /// </summary>
     /// <typeparam name="Tkey">Id object (example: Guid, int ...</typeparam>
-    public interface IDeleteEntity<Tkey>: IEntityBase<Tkey>, IDeleteEntity
+    public interface IDeleteEntity<Tkey>: IEntityBase<Tkey>, ISoftDelete<Tkey>
     {
 
     }
@@ -58,16 +47,15 @@ namespace WebTemplate.Core.Entities
         /// <summary>
         /// Creation date of entity
         /// </summary>       
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        DateTime? CreatedDate { get; set; }
+        DateTime CreatedDate { get; set; }
         /// <summary>
         /// Create by User Id
         /// </summary>
         string? CreatedBy { get; set; }
         /// <summary>
         /// Updated date of entity
-        /// </summary>
-        DateTime? UpdatedDate { get; set; }
+        /// </summary>        
+        DateTime UpdatedDate { get; set; }
         /// <summary>
         /// Update by User Id
         /// </summary>
@@ -86,7 +74,7 @@ namespace WebTemplate.Core.Entities
     /// <summary>
     /// Define an full Audited entity with primary key
     /// </summary>
-    public interface IFullAuditEntity : IAuditEntity, IDeleteEntity
+    public interface IFullAuditEntity : IAuditEntity, ISoftDelete
     {
 
     }

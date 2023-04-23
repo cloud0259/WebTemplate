@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Core;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
 using Serilog.Configuration;
@@ -11,8 +12,13 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using WebTemplate.Core.Contracts;
+using WebTemplate.Core.Entities;
 using WebTemplate.Core.Repositories;
 using WebTemplate.Infrastructure.DependencyInjection;
+using WebTemplate.Infrastructure.EntityFrameworkCore;
+using WebTemplate.Infrastructure.EntityFrameworkCore.Abstractions;
+using WebTemplate.Infrastructure.EntityFrameworkCore.SoftDeletes;
 using WebTemplate.Infrastructure.Identity.Models;
 using WebTemplate.Infrastructure.Identity.Providers;
 using WebTemplate.Infrastructure.Repositories;
@@ -29,7 +35,27 @@ namespace WebTemplate.Infrastructure.Modules
             //Register Current User 
             builder.RegisterType(typeof(CurrentUser)).As(typeof(ICurrentUser));
             builder.RegisterType(typeof(DefaultPrincipalProvider)).As(typeof(IPrincipalProvider));
-            
+
+            //DataFilter
+            builder.RegisterGeneric(typeof(DataFilter<>)).As(typeof(IDataFilter<>));
+            builder.RegisterType(typeof(DataFilter)).As(typeof(IDataFilter)).SingleInstance();
+
+            builder.RegisterAssemblyTypes(typeof(WebTemplateBaseDbContext<>).Assembly)
+                   .Where(t => t.IsAssignableTo<WebTemplateBaseDbContext<WebTemplateDbContext>>())
+                   .PropertiesAutowired(propertySelector: new DefaultPropertySelector(false))
+                   .AsSelf()
+                   .InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(t => t.GetInterfaces().Contains(typeof(ITransientDependency)))
+                .PropertiesAutowired(propertySelector: new DefaultPropertySelector(false))
+                .AsImplementedInterfaces()
+                .InstancePerDependency();
+
+            builder.RegisterAssemblyTypes(ThisAssembly)
+                .Where(t => t.Name.EndsWith("Adapter"))
+                .AsImplementedInterfaces();
+
             //Register the repositories on the infrastructure project
             builder.RegisterAssemblyTypes(ThisAssembly)
                 .Where(t => t.Name.EndsWith("Repository"))

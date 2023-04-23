@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 using WebTemplate.Application.Applications;
 using WebTemplate.Application.Dtos.Users;
 using WebTemplate.Core.Repositories;
+using WebTemplate.Domain.Adapters;
 using WebTemplate.Domain.Users;
+using WebTemplate.Infrastructure.Adapters;
 using WebTemplate.Infrastructure.DependencyInjection;
 using WebTemplate.Infrastructure.Identity.Models;
 using WebTemplate.Infrastructure.Identity.Repositories;
@@ -19,21 +21,24 @@ namespace WebTemplate.Application.Users
     public class UserAppService :ApplicationService, IUserAppService
     {
         private readonly IIdentityUserRepository _userRepository;
-        private readonly UserManager<ApplicationUser> _userManager; 
+        private readonly IUserDetailsRepository _userDetailsRepository;
+        private readonly IUserAdapter _userAdapter;
         public UserAppService(
             IIdentityUserRepository userRepository,
-            UserManager<ApplicationUser> userManager)
+            IUserDetailsRepository userDetailsRepository,
+            IUserAdapter userAdapter)
         {
-            _userRepository = userRepository;          
-            _userManager = userManager;
+            _userRepository = userRepository;
+            _userDetailsRepository = userDetailsRepository;
+            _userAdapter = userAdapter;
         }
 
         public async Task<UserDto> CreateAsync(CreateUpdateUserDto input)
         {
             var user = Mapper.Map<ApplicationUser>(input);
 
-            var result = await _userManager.CreateAsync(user, input.Password);
-            if(result.Succeeded)
+            var result = await _userRepository.InsertAsync(user, input.Password);
+            if(result != null)
             {
                 return Mapper.Map<UserDto>(result);
             }
@@ -42,13 +47,22 @@ namespace WebTemplate.Application.Users
             throw new Exception("Erreur lors de la création de l'utilisateur");
         }
 
-        public async Task<UserDto> GetUserAsync(string email)
+        public async Task<UserDetails> AddDetailsToUser(CreateUpdateUserDetailsDto input)
         {
-            Logger.LogDebug(CurrentUser.UserId);
+            var userDetails = Mapper.Map<UserDetails>(input);
+            userDetails.UserId = CurrentUser.UserId!.Value;
+            var userDetailsSave = await _userDetailsRepository.InsertAsync(userDetails);
+
+            return userDetailsSave;
+        }
+
+        public async Task<UserDetailsWithIdentityUserDto> GetUserAsync(Guid id)
+        {
+            Logger.LogDebug(CurrentUser.UserId.ToString());
             Logger.LogInformation("Demande d'utilisateur");
-            var user = await _userRepository.GetAsync(u => u.Email == email);
-            Logger.LogInformation($"Reception de l'utilisateur {user.UserName}");
-            return Mapper.Map<UserDto>(user);
+            var userDetails = await _userAdapter.GetUserDetailsById(id);
+            Logger.LogInformation($"Reception de l'utilisateur {userDetails.UserName}");
+            return Mapper.Map<UserDetailsWithIdentityUserDto>(userDetails);
         }
 
         public async Task<IEnumerable<UserDto>> GetUsersAsync()

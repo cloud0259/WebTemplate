@@ -13,22 +13,12 @@ using WebTemplate.Core.Entities;
 
 namespace WebTemplate.Infrastructure.Identity.Models
 {
-    public class ApplicationUser:IdentityUser<Guid>,IEntityBase<Guid>
+    public class ApplicationUser:IdentityUser<Guid>
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public bool IsEnabled { get; set; }
         public override string? Email { get; set; }
 
-        [IgnoreDataMember]
-        public string FullName
-        {
-            get => $"{FirstName} {LastName}";
-        }
-
-        public object[] GetKeys()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
