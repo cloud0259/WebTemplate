@@ -15,6 +15,6 @@ namespace WebTemplate.Infrastructure.Identity.Providers
         {
             _contextAccessor = httpContextAccessor;
         }
-        public IPrincipal User => _contextAccessor.HttpContext.User;
+        public IPrincipal User => _contextAccessor!.HttpContext.User;
     }
 }

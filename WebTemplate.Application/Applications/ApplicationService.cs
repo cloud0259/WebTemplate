@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using WebTemplate.Core.Entities;
 using WebTemplate.Infrastructure.DependencyInjection;
+using WebTemplate.Infrastructure.EntityFrameworkCore.SoftDeletes;
 using WebTemplate.Infrastructure.Identity.Models;
 
 namespace WebTemplate.Application.Applications
@@ -14,6 +16,7 @@ namespace WebTemplate.Application.Applications
         public ILogger Logger => LazyServiceProvider.LazyGetService<ILogger>(provider => LoggerFactory?.CreateLogger(GetType().FullName) ?? NullLogger.Instance);
         public IMapper Mapper => LazyServiceProvider.LazyGetRequiredService<IMapper>();
         public ICurrentUser CurrentUser => LazyServiceProvider.LazyGetRequiredService<ICurrentUser>();
+        public IDataFilter DataFilter => LazyServiceProvider.LazyGetRequiredService<IDataFilter>();
 
     }
 }

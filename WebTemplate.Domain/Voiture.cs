@@ -8,7 +8,7 @@ using WebTemplate.Domain.Users;
 
 namespace WebTemplate.Domain
 {
-    public class Voiture : AuditEntity<Guid>
+    public class Voiture : FullAuditEntity<Guid>
     {
         public string Name { get; set; }
     }

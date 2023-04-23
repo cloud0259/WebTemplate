@@ -7,12 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using WebTemplate.Domain.Users;
 using WebTemplate.Infrastructure.EntityFrameworkCore;
+using WebTemplate.Infrastructure.EntityFrameworkCore.SoftDeletes;
 
 namespace WebTemplate.Infrastructure.Repositories
 {
     public class UserDetailsRepository : Repository<UserDetails, Guid>, IUserDetailsRepository
     {
-        public UserDetailsRepository(WebTemplateDbContext dbContext) : base(dbContext)
+        public UserDetailsRepository(WebTemplateDbContext dbContext, IDataFilter dataFilter) 
+            : base(dbContext, dataFilter)
         {
         }
 

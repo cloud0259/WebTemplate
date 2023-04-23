@@ -12,16 +12,18 @@ using System.Threading.Tasks;
 using WebTemplate.Core.Entities;
 using WebTemplate.Core.Repositories;
 using WebTemplate.Infrastructure.EntityFrameworkCore;
+using WebTemplate.Infrastructure.EntityFrameworkCore.SoftDeletes;
 
 namespace WebTemplate.Infrastructure.Repositories
 {
     public class Repository<TEntity, TKey> :  IRepository<TEntity, TKey> where TEntity : EntityBase<TKey>
     {
-        public  WebTemplateDbContext DbContext { get; }
-
-        public Repository(WebTemplateDbContext dbContext)
+        public WebTemplateDbContext DbContext { get; }
+        public IDataFilter DataFilter { get; }
+        public Repository(WebTemplateDbContext dbContext, IDataFilter dataFilter)
         {
             DbContext = dbContext;
+            DataFilter = dataFilter;
         }
 
         public virtual async Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
@@ -64,11 +66,11 @@ namespace WebTemplate.Infrastructure.Repositories
 
         public virtual async Task<TEntity> GetAsync(TKey id, CancellationToken cancellationToken = default)
         {
-            var entity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(x=>x.Id.Equals(id), cancellationToken: cancellationToken);
+            var entity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken: cancellationToken);
 
             if (entity == null)
             {
-                throw new Exception($"{typeof(TEntity)} as  expression not found");
+                throw new Exception($"{typeof(TEntity)} as expression not found");
             }
 
             return entity;
@@ -92,7 +94,7 @@ namespace WebTemplate.Infrastructure.Repositories
                 await DbContext.SaveChangesAsync(cancellationToken);
                 return entity;
             }
-            catch (Exception ex)
+            catch (Exception ex)    
             {
                 Log.Logger.Error(ex.Message);
                 throw new Exception(ex.Message);
@@ -118,6 +120,15 @@ namespace WebTemplate.Infrastructure.Repositories
         public Task UpdateManyAsync(IEnumerable<TEntity> entity, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual async Task HardDeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            using(var t = DataFilter.Disable<ISoftDelete>())
+            {
+                DbContext.Remove(entity);
+                await DbContext.SaveChangesAsync(cancellationToken);
+            }
         }
     }
 }

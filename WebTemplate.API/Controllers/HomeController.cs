@@ -70,6 +70,20 @@ namespace WebTemplate.API.Controllers {
             return await _carAppService.UpdateCar(id,name);
         }
 
+        [HttpDelete("DeleteCar")]
+        public async Task<IActionResult> DeleteCar(Guid id)
+        {
+            await _carAppService.DeleteCar(id);
+            return Ok();
+        }
+
+        [HttpDelete("HardDeleteCar")]
+        public async Task<IActionResult> HardDeleteCar(Guid id)
+        {
+            await _carAppService.HardDeleteAsync(id);
+            return Ok();
+        }
+
         [AllowAnonymous]
         [HttpPost("GetAllCars")]
         public async Task<ActionResult<IEnumerable<Voiture>>> GetAllCars()

@@ -50,7 +50,7 @@ namespace WebTemplate.Application.Users
         public async Task<UserDetails> AddDetailsToUser(CreateUpdateUserDetailsDto input)
         {
             var userDetails = Mapper.Map<UserDetails>(input);
-            userDetails.UserId = CurrentUser.UserId;
+            userDetails.UserId = CurrentUser.UserId!.Value;
             var userDetailsSave = await _userDetailsRepository.InsertAsync(userDetails);
 
             return userDetailsSave;

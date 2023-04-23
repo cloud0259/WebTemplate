@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using WebTemplate.Application.Applications;
-using WebTemplate.Core.Repositories;
+﻿using WebTemplate.Application.Applications;
+using WebTemplate.Core.Entities;
 using WebTemplate.Domain;
 
 namespace WebTemplate.Application.Cars
 {
-    public class CarAppService: ApplicationService, ICarAppService
+    public class CarAppService : ApplicationService, ICarAppService
     {
         private readonly ICarRepository _voitureRepository;
 
@@ -29,7 +23,10 @@ namespace WebTemplate.Application.Cars
 
         public async Task<IEnumerable<Voiture>> GetAllCar()
         {
-            return await _voitureRepository.GetAllAsync(true);
+            using (var t = DataFilter.Disable<ISoftDelete>())
+            {
+                return await _voitureRepository.GetAllAsync(true);
+            }
         }
 
         public async Task<Voiture> UpdateCar(Guid id, string name)
@@ -38,6 +35,27 @@ namespace WebTemplate.Application.Cars
             car.Name = name;
             var carUpdate = await _voitureRepository.UpdateAsync(car);
             return carUpdate;
+        }
+
+        public async Task DeleteCar(Guid id)
+        {
+            var car = await _voitureRepository.GetAsync(id);
+            if (car != null)
+            {
+                await _voitureRepository.DeleteAsync(car);
+            }
+        }
+
+        public async Task HardDeleteAsync(Guid id)
+        {
+            using (var filter = DataFilter.Disable<ISoftDelete>())
+            {
+                var car = await _voitureRepository.GetAsync(id);
+                if (car != null)
+                {
+                    await _voitureRepository.HardDeleteAsync(car);
+                }
+            }
         }
     }
 }

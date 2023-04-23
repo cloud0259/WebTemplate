@@ -14,5 +14,7 @@ namespace WebTemplate.Application.Cars
         public Task<IEnumerable<Voiture>> GetAllCar();
 
         public Task<Voiture> UpdateCar(Guid id, string name);
+        public Task DeleteCar(Guid id);
+        public Task HardDeleteAsync(Guid id);
     }
 }

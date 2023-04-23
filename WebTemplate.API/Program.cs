@@ -24,10 +24,10 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 
 
 });
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.SetupSwagger();
+builder.Services.SetupSwagger(); 
 builder.Services.SetupAuthentication(builder.Configuration);
 builder.Services.SetAuthorization();
 builder.Services.AddHttpContextAccessor();
