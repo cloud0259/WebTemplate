@@ -10,7 +10,7 @@ namespace WebTemplate.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TokenController
+    public class TokenController : ControllerBase
     {
         private readonly IMediator _mediator;
 

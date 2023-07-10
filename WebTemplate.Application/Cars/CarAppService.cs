@@ -16,7 +16,7 @@ namespace WebTemplate.Application.Cars
         public async Task<Voiture> CreateCar(string name)
         {
             var car = new Voiture { Name = name };
-            var carSave = _voitureRepository.InsertAsync(car);
+            var carSave = await _voitureRepository.InsertAsync(car);
 
             return car;
         }

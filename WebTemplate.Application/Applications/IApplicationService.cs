@@ -1,6 +1,8 @@
-﻿namespace WebTemplate.Application.Applications
+﻿using ControllerGenerator.Abstraction.Contracts;
+
+namespace WebTemplate.Application.Applications
 {
-    public interface IApplicationService
+    public interface IApplicationService: IAutoGenerateController
     {
     }
 }

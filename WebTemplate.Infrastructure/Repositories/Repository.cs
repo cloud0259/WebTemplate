@@ -66,14 +66,17 @@ namespace WebTemplate.Infrastructure.Repositories
 
         public virtual async Task<TEntity> GetAsync(TKey id, CancellationToken cancellationToken = default)
         {
-            var entity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken: cancellationToken);
-
-            if (entity == null)
+            using (var t = DataFilter.Disable<ISoftDelete>())
             {
-                throw new Exception($"{typeof(TEntity)} as expression not found");
-            }
+                var entity = await DbContext.Set<TEntity>().FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken: cancellationToken);
 
-            return entity;
+                if (entity == null)
+                {
+                    throw new Exception($"{typeof(TEntity)} as expression not found");
+                }
+
+                return entity;
+            }
         }
 
         public virtual Task<(int,IEnumerable<TEntity>)> GetPagedList(int skipCount, int maxResultCount, string sorting, bool includeDetails = false, CancellationToken cancellationToken = default)

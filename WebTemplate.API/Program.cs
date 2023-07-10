@@ -15,14 +15,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 {
-
     var env = hostingContext.HostingEnvironment;
 
     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
           .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
-          .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.secret.json"), true); ;
-
-
+          .AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.secret.json"), true); 
 });
 
 builder.Services.AddControllers();
