@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.Extensions.Identity.Core;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using WebTemplate.Infrastructure.Identity.Models;
 using Microsoft.Extensions.FileProviders;
 using WebTemplate.Infrastructure.Adapters;
+using Microsoft.AspNetCore.Http;
 
 namespace WebTemplate.Infrastructure.Identity.Services
 {
